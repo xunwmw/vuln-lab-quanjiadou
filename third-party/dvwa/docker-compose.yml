@@ -1,0 +1,6 @@
+services:
+  dvwa:
+    image: vulnerables/web-dvwa
+    ports:
+      - "127.0.0.1:8081:80"   # 只绑回环，局域网也访问不到
+    restart: unless-stopped

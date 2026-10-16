@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 自建靶场语法检查
+        run: |
+          python -m py_compile labs/target-site/app.py
+          python -m py_compile labs/target-site-lab/app.py
+
+      - name: 自建靶场冒烟（起服务 → 首页 200；lab 版额外验证复位 200）
+        run: |
+          set -e
+          (cd labs/target-site && python app.py 8080 > /tmp/a.log 2>&1 &)
+          (cd labs/target-site-lab && python app.py 8095 > /tmp/b.log 2>&1 &)
+          for p in 8080 8095; do
+            for i in $(seq 1 20); do curl -fsS -o /dev/null "http://127.0.0.1:$p/" && break; sleep 0.5; done
+            echo "index $p: $(curl -fsS -o /dev/null -w '%{http_code}' http://127.0.0.1:$p/)"
+          done
+          echo "reset 8095: $(curl -fsS -X POST 'http://127.0.0.1:8095/__reset?confirm=RESET' -o /dev/null -w '%{http_code}')"
+
+      - name: 确认只绑回环（防误暴露）
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+          bad = []
+          for p in pathlib.Path('labs').rglob('*.py'):
+              for i, line in enumerate(p.read_text(encoding='utf-8').splitlines(), 1):
+                  code = line.split('#', 1)[0]          # 忽略注释
+                  if re.search(r'0\.0\.0\.0', code):
+                      bad.append(f'{p}:{i}: {line.strip()}')
+          if bad:
+              print('\n'.join(bad))
+              print('::error::自建靶场不得绑定 0.0.0.0')
+              sys.exit(1)
+          binds = sum(1 for p in pathlib.Path('labs').rglob('*.py')
+                      if 'HOST = "127.0.0.1"' in p.read_text(encoding='utf-8'))
+          print(f'OK: {binds} 个靶场均为回环绑定')
+          sys.exit(0 if binds >= 2 else 1)
+          PY
+
+  encoding-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 所有文本文件必须是合法 UTF-8
+        run: |
+          python3 - <<'PY'
+          import pathlib, sys
+          exts = {'.md', '.py', '.json', '.txt', '.yml', '.yaml', '.js', '.mjs', '.sh', '.ps1', '.cmd'}
+          bad = []
+          for p in pathlib.Path('.').rglob('*'):
+              if not p.is_file() or '.git' in p.parts or p.suffix.lower() not in exts:
+                  continue
+              try:
+                  p.read_bytes().decode('utf-8')
+              except UnicodeDecodeError:
+                  bad.append(str(p))
+          print('非 UTF-8 文件:', bad if bad else '无')
+          sys.exit(1 if bad else 0)
+          PY

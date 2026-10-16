@@ -1,0 +1,6 @@
+# lab config backup (moved out of web root)
+SECRET_KEY=lab-secret-key-PLEASE-CHANGE-001
+DB_PATH=C:\Users\Administrator\Documents\Codex\2026-10-16\n-h\work\repos\vuln-labs\labs\target-site-lab\lab.db
+DB_USER=root
+DB_PASSWORD=root123456
+DEBUG=false
