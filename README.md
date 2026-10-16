@@ -1,4 +1,4 @@
-# vuln-labs — 本地漏洞靶场合集
+# vuln-lab-quanjiadou — 本地漏洞靶场合集
 
 **EN** — A curated collection of local-only vulnerability labs: two self-built business-logic labs,
 plus ready-to-run setups for DVWA / bWAPP / Juice Shop / Vulhub. Every lab binds `127.0.0.1` only;
@@ -20,7 +20,7 @@ the goal is a reproducible practice environment, not a public service.
 | [third-party/juice-shop](third-party/juice-shop/) | 第三方 | 现代 SPA + 业务逻辑 + JWT + 组件 CVE | 3000 | Docker | `docker compose up -d` |
 | [third-party/vulhub](third-party/vulhub/README.md) | 第三方 | 单点 CVE 复现（Shiro/Tomcat/Solr/Struts2…） | 按镜像 | Docker | 见说明 |
 
-> 自建的 `target-site-lab` 同时以 [WebVulnLab](https://github.com/xunwmw/WebVulnLab) 单独立仓库发布；
+> 自建的 `target-site-lab` 同时以 [onefile-vuln-lab](https://github.com/xunwmw/onefile-vuln-lab) 单独立仓库发布；
 > 本仓库把它和另一个自建站放在一起，便于"一处拉起全部靶场"。
 
 ## 快速开始（Windows）
@@ -94,9 +94,9 @@ bash scripts/reset-all.sh      # 复位自建靶场
 
 | 你想做的事 | 点哪里 |
 | --- | --- |
-| 跑不起来 / 报错 | [提 Bug 报告](https://github.com/xunwmw/vuln-labs/issues/new?template=bug_report.md) |
-| 想要新靶场 / 提意见 | [提建议](https://github.com/xunwmw/vuln-labs/issues/new) |
-| **想一起做这个项目（申请项目合作人）** | [提交合作者申请](https://github.com/xunwmw/vuln-labs/issues/new?template=collaborator_request.md) |
+| 跑不起来 / 报错 | [提 Bug 报告](https://github.com/xunwmw/vuln-lab-quanjiadou/issues/new?template=bug_report.md) |
+| 想要新靶场 / 提意见 | [提建议](https://github.com/xunwmw/vuln-lab-quanjiadou/issues/new) |
+| **想一起做这个项目（申请项目合作人）** | [提交合作者申请](https://github.com/xunwmw/vuln-lab-quanjiadou/issues/new?template=collaborator_request.md) |
 | 已经改好了 | 直接发 Pull Request（见 [docs/ADD-A-LAB.md](docs/ADD-A-LAB.md) 的收录要求） |
 
 「申请项目合作人」就是 GitHub 的仓库协作者（Collaborator）：你提申请，我会在 **Settings → Collaborators** 里把你加进来，
