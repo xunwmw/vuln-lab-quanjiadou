@@ -30,6 +30,9 @@ the goal is a reproducible practice environment, not a public service.
 powershell -File scripts/start-all.ps1
 # → http://127.0.0.1:8091（target-site）  http://127.0.0.1:8095（target-site-lab）
 
+# 第三方靶场要先解决 Docker Hub 拉不动的问题（中国大陆直连会超时）
+powershell -File scripts/pull-with-mirror.ps1
+
 # 起第三方靶场（按需）
 cd third-party/dvwa && docker compose up -d
 cd third-party/juice-shop && docker compose up -d
@@ -37,6 +40,9 @@ cd third-party/juice-shop && docker compose up -d
 # 预拉下一批镜像（省时间，见 docs/PREFETCH.md）
 powershell -File scripts/prefetch-images.ps1
 ```
+
+> **国内网络提醒**：直连 `registry-1.docker.io` / `auth.docker.io` 会超时（2026-10-16 实测，上海·中国移动·未开代理）。
+> 用 `scripts/pull-with-mirror.ps1` 或配 `registry-mirrors` 即可，细节与完整实测表见 [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md)。
 
 ## 快速开始（Linux / macOS / WSL）
 
@@ -78,3 +84,22 @@ bash scripts/reset-all.sh      # 复位自建靶场
 ## 许可
 
 自建靶场代码：MIT。第三方靶场（DVWA / bWAPP / Juice Shop / Vulhub）遵循各自原项目许可，本仓库只提供启动配置。
+
+---
+
+## 反馈 · 合作
+
+> 如果你在使用时发现了任何问题，可以给我发消息或者私信我。不过最好不要私信，本人社恐。欢迎大佬给我的项目提意见。
+> 如果你使用时发生了错误或者没法使用，也可以修改我的项目。申请项目合作人。
+
+| 你想做的事 | 点哪里 |
+| --- | --- |
+| 跑不起来 / 报错 | [提 Bug 报告](https://github.com/xunwmw/vuln-labs/issues/new?template=bug_report.md) |
+| 想要新靶场 / 提意见 | [提建议](https://github.com/xunwmw/vuln-labs/issues/new) |
+| **想一起做这个项目（申请项目合作人）** | [提交合作者申请](https://github.com/xunwmw/vuln-labs/issues/new?template=collaborator_request.md) |
+| 已经改好了 | 直接发 Pull Request（见 [docs/ADD-A-LAB.md](docs/ADD-A-LAB.md) 的收录要求） |
+
+「申请项目合作人」就是 GitHub 的仓库协作者（Collaborator）：你提申请，我会在 **Settings → Collaborators** 里把你加进来，
+通过后你有这个仓库的写权限（能建分支、提 PR、管 Issue），比一直 fork 省事。
+
+**跑之前先看环境与网络要求** → [docs/ENVIRONMENT.md](docs/ENVIRONMENT.md)（系统版本 / 依赖 / 国内网络实测 + 镜像加速方案）
