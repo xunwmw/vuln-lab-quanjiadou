@@ -1,4 +1,4 @@
-# vuln-lab-quanjiadou — 本地漏洞靶场合集
+# 🍗 靶场全家桶 · 无限副本 — vuln-labs：DVWA / bWAPP / Juice Shop / Vulhub 一键起（含自建业务逻辑靶场）
 
 **EN** — A curated collection of local-only vulnerability labs: two self-built business-logic labs,
 plus ready-to-run setups for DVWA / bWAPP / Juice Shop / Vulhub. Every lab binds `127.0.0.1` only;
